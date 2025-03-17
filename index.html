@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonScanner - Solana Meme Coin Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #9945FF;
+            --secondary: #14F195;
+            --accent: #00FFA3;
+            --background: #0F172A;
+            --card-bg: #1E293B;
+            --text: #F8FAFC;
+            --text-secondary: #94A3B8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-left: 8px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(153, 69, 255, 0.2), transparent 70%);
+        }
+        
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-secondary);
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #000;
+            font-weight: 600;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 40px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(153, 69, 255, 0.3);
+        }
+        
+        /* Countdown */
+        .countdown-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto 80px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .countdown-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--accent);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .countdown-number {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .countdown-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Features */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 60px;
+            color: var(--text);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            padding: 80px 0;
+            background-color: rgba(30, 41, 59, 0.5);
+        }
+        
+        .trust-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .metric {
+            padding: 20px;
+        }
+        
+        .metric-value {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .testimonial-text {
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .author-name {
+            font-weight: 600;
+        }
+        
+        .author-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .quote-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
+            opacity: 0.1;
+            color: var(--accent);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .footer-logo span {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .floating-coin {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at center, var(--primary), var(--secondary));
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating elements -->
+    <div class="floating-elements">
+        <div class="floating-coin" style="left: 10%; top: 20%; animation-duration: 25s;"></div>
+        <div class="floating-coin" style="left: 25%; top: 40%; animation-duration: 20s;"></div>
+        <div class="floating-coin" style="left: 45%; top: 15%; animation-duration: 30s;"></div>
+        <div class="floating-coin" style="left: 65%; top: 35%; animation-duration: 22s;"></div>
+        <div class="floating-coin" style="left: 85%; top: 25%; animation-duration: 28s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>MoonScanner</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#trust">Trust Metrics</a>
+                    <a href="#testimonials">Testimonials</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Discover the Next Solana Moonshot</h1>
+            <p><b>Advanced meme coin analysis platform that helps you find early gems on Solana with real-time data and smart contract verification
+            <br><br><b><i>This is not financial advice, invest money that you can aford to lose. Do your own research before invest in meme coin.</i>
+            
+            </p>
+            
+            
+            <!-- Countdown -->
+            <div class="countdown-container">
+                <h3 class="countdown-title">Token Sale Starts In</h3>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+                <!-- Buy token button will appear here after countdown -->
+                <div id="buy-button-container" style="display: none;">
+                    <a href="https://pump.fun/coin/3DRnsQ5GA2XKk8WJ3yB46KbcRWGtA3E6cgFaqzJWpump" 
+                       class="cta-button" 
+                       style="margin: 20px auto; display: block; max-width: 300px; text-align: center;">
+                        <i class="fas fa-rocket"></i> BUY TOKEN NOW
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Advanced Analysis Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time Liquidity Tracking</h3>
+                    <p class="feature-description">Monitor liquidity pools and detect suspicious activities before they impact token price.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Contract Audit</h3>
+                    <p class="feature-description">Automatic verification of token contracts to detect honeypots and other malicious code.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Price Prediction Models</h3>
+                    <p class="feature-description">Advanced algorithms to forecast potential price movements based on on-chain metrics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="feature-title">Whale Wallet Alerts</h3>
+                    <p class="feature-description">Get notified when large holders make significant moves that could affect token price.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Custom Price Alerts</h3>
+                    <p class="feature-description">Set personalized notifications for price movements and important token events.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="feature-title">Trending Tokens</h3>
+                    <p class="feature-description">Discover the hottest new meme coins before they go viral on social media.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section" id="trust">
+        <div class="container">
+            <h2 class="section-title">Trusted by Meme Coin Investors</h2>
+            <div class="trust-metrics">
+                <div class="metric">
+                    <div class="metric-value">50K+</div>
+                    <div class="metric-label">Active Users</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$240M+</div>
+                    <div class="metric-label">Tokens Analyzed</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">312</div>
+                    <div class="metric-label">Scams Prevented</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">98.7%</div>
+                    <div class="metric-label">Accuracy Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">MoonScanner helped me avoid several rug pulls and find genuine gems on Solana. The contract analysis feature is a game-changer.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">John Doe</div>
+                            <div class="author-title">Crypto Trader</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">The whale wallet tracking alone is worth the token investment. I've made 10x returns by following smart money movements.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AS</div>
+                        <div class="author-info">
+                            <div class="author-name">Alice Smith</div>
+                            <div class="author-title">DeFi Enthusiast</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">As a developer, I appreciate the technical depth of the analysis. MoonScanner doesn't just look at hype, but actual on-chain metrics.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <div class="author-name">Mike Johnson</div>
+                            <div class="author-title">Blockchain Developer</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>MoonScanner</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-medium"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Countdown Timer
+function updateCountdown() {
+    // Set a specific date and time for the countdown to end
+    // Format: new Date(year, month-1, day, hour, minute, second)
+    // Example: March 25, 2025 at 12:00 UTC
+    const countDownDate = new Date('March 18, 2025 00:00:00 UTC').getTime();
+    
+    // Update the countdown every 1 second
+    const x = setInterval(function() {
+        // Get current date and time
+        const now = new Date().getTime();
+        
+        // Calculate the remaining time
+        const distance = countDownDate - now;
+        
+        // Calculate days, hours, minutes and seconds
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Display the result
+        document.getElementById("days").innerHTML = String(days).padStart(2, "0");
+        document.getElementById("hours").innerHTML = String(hours).padStart(2, "0");
+        document.getElementById("minutes").innerHTML = String(minutes).padStart(2, "0");
+        document.getElementById("seconds").innerHTML = String(seconds).padStart(2, "0");
+        
+        // If the countdown is finished
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("days").innerHTML = "00";
+            document.getElementById("hours").innerHTML = "00";
+            document.getElementById("minutes").innerHTML = "00";
+            document.getElementById("seconds").innerHTML = "00";
+            
+            // Show the buy button
+            document.getElementById("buy-button-container").style.display = "block";
+        }
+    }, 1000);
+}
+
+// Initialize countdown on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCountdown();
+            
+            // Add floating coins dynamically
+            const floatingElements = document.querySelector('.floating-elements');
+            for (let i = 0; i < 10; i++) {
+                const coin = document.createElement('div');
+                coin.classList.add('floating-coin');
+                coin.style.left = `${Math.random() * 100}%`;
+                coin.style.top = `${Math.random() * 100}%`;
+                coin.style.width = `${Math.random() * 30 + 10}px`;
+                coin.style.height = coin.style.width;
+                coin.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                coin.style.animationDelay = `${Math.random() * 10}s`;
+                floatingElements.appendChild(coin);
+            }
+        });
+        
+        
+    </script>
+</body>
+</html>
